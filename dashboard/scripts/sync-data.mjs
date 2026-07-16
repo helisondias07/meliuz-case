@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -35,9 +35,19 @@ try {
 
   console.log(`Synced ${results.length} result file(s) to ${path.relative(dashboardRoot, targetFile)}.`);
 } catch (error) {
-  await mkdir(targetDir, { recursive: true });
-  await writeFile(targetFile, "[]\n", "utf8");
-  console.warn(
-    `Could not sync outputs/results/*.json. The dashboard will show an empty state.\n${error.message}`
-  );
+  try {
+    await access(targetFile);
+    console.warn(
+      `Could not sync outputs/results/*.json. Keeping existing ${path.relative(
+        dashboardRoot,
+        targetFile
+      )}.\n${error.message}`
+    );
+  } catch {
+    await mkdir(targetDir, { recursive: true });
+    await writeFile(targetFile, "[]\n", "utf8");
+    console.warn(
+      `Could not sync outputs/results/*.json. Created an empty dashboard dataset.\n${error.message}`
+    );
+  }
 }
