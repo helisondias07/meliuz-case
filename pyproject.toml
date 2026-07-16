@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meliuz-abtest"
+version = "0.1.0"
+description = "Analise reutilizavel de testes A/B de cashback"
+requires-python = ">=3.10"
+dependencies = [
+  "pandas>=2.0",
+  "scipy>=1.10",
+  "matplotlib>=3.7",
+  "tabulate>=0.9",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+sheets = ["gspread>=6.0", "google-auth>=2.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

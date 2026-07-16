@@ -1,0 +1,109 @@
+{
+  "test_name": "Cashback Parceiro A",
+  "description": "3 faixas de cashback, teste concorrente por data",
+  "meta": {
+    "arquivo": "data\\dataset_01_parceiroA.csv",
+    "linhas_originais": 276,
+    "linhas_duplicadas_removidas": 0,
+    "linhas_invalidas_removidas": 0,
+    "linhas_removidas_limpeza": 0,
+    "linhas_validas": 276,
+    "colunas_extras_ignoradas": [],
+    "parceiro": "Parceiro A",
+    "grupos": [
+      "Grupo 1",
+      "Grupo 2",
+      "Grupo 3"
+    ],
+    "periodo_inicio": "2011-01-01",
+    "periodo_fim": "2011-04-02",
+    "dias_por_grupo": {
+      "Grupo 1": 92,
+      "Grupo 2": 92,
+      "Grupo 3": 92
+    }
+  },
+  "summary": [
+    {
+      "variante": "Grupo 1",
+      "compradores_total": 9633.0,
+      "dias": 92.0,
+      "vendas_total": 5605173.0,
+      "comissao_total": 638135.0,
+      "cashback_total": 233424.0,
+      "margem_total": 404711.0,
+      "margem_por_comprador": 42.01,
+      "ticket_medio": 581.87,
+      "cashback_pct_vendas": 4.16,
+      "roi_cashback": 1.73
+    },
+    {
+      "variante": "Grupo 2",
+      "compradores_total": 10814.0,
+      "dias": 92.0,
+      "vendas_total": 6423096.0,
+      "comissao_total": 728178.0,
+      "cashback_total": 370659.0,
+      "margem_total": 357519.0,
+      "margem_por_comprador": 33.06,
+      "ticket_medio": 593.96,
+      "cashback_pct_vendas": 5.77,
+      "roi_cashback": 0.96
+    },
+    {
+      "variante": "Grupo 3",
+      "compradores_total": 11410.0,
+      "dias": 92.0,
+      "vendas_total": 6785856.0,
+      "comissao_total": 767887.0,
+      "cashback_total": 503600.0,
+      "margem_total": 264287.0,
+      "margem_por_comprador": 23.16,
+      "ticket_medio": 594.73,
+      "cashback_pct_vendas": 7.42,
+      "roi_cashback": 0.52
+    }
+  ],
+  "comparison": [
+    {
+      "variante": "Grupo 2",
+      "vs_baseline": "Grupo 1",
+      "dif_margem_por_comprador_media": -8.9417,
+      "ic95_low": -10.598,
+      "ic95_high": -7.2586,
+      "prob_variante_supera_baseline": 0.0,
+      "n_dias_variante": 92,
+      "n_dias_baseline": 92,
+      "pareamento_usado": true,
+      "amostra_pequena_lt30d": false
+    },
+    {
+      "variante": "Grupo 3",
+      "vs_baseline": "Grupo 1",
+      "dif_margem_por_comprador_media": -18.8289,
+      "ic95_low": -21.6616,
+      "ic95_high": -15.8571,
+      "prob_variante_supera_baseline": 0.0,
+      "n_dias_variante": 92,
+      "n_dias_baseline": 92,
+      "pareamento_usado": true,
+      "amostra_pequena_lt30d": false
+    }
+  ],
+  "decision": {
+    "acao": "escalar",
+    "variante_recomendada": "Grupo 1",
+    "motivo": "Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 42.01) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.",
+    "alertas": [],
+    "ressalvas": [],
+    "evidencia_estatistica": {
+      "baseline": "Grupo 1",
+      "alternativas_comparadas": 2
+    },
+    "confiavel_estatisticamente": true
+  },
+  "artifacts": {
+    "markdown_path": "outputs\\reports\\cashback_parceiro_a.md",
+    "chart_path": "outputs\\reports\\cashback_parceiro_a_chart.png"
+  }
+}

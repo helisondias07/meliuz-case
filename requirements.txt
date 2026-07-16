@@ -1,0 +1,10 @@
+pandas>=2.0
+scipy>=1.10
+matplotlib>=3.7
+tabulate>=0.9
+pytest>=8.0
+
+# Opcionais — só necessários se for escrever direto no Google Sheets
+# (ver README.md, seção "Google Sheets (opcional)")
+# gspread>=6.0
+# google-auth>=2.0

@@ -1,0 +1,84 @@
+{
+  "test_name": "Cashback Parceiro C",
+  "description": "2 faixas de cashback, teste concorrente por data",
+  "meta": {
+    "arquivo": "data\\dataset_03_parceiroC.csv",
+    "linhas_originais": 90,
+    "linhas_duplicadas_removidas": 0,
+    "linhas_invalidas_removidas": 0,
+    "linhas_removidas_limpeza": 0,
+    "linhas_validas": 90,
+    "colunas_extras_ignoradas": [],
+    "parceiro": "Parceiro C",
+    "grupos": [
+      "Grupo 1",
+      "Grupo 2"
+    ],
+    "periodo_inicio": "2011-07-01",
+    "periodo_fim": "2011-08-14",
+    "dias_por_grupo": {
+      "Grupo 1": 45,
+      "Grupo 2": 45
+    }
+  },
+  "summary": [
+    {
+      "variante": "Grupo 1",
+      "compradores_total": 4549.0,
+      "dias": 45.0,
+      "vendas_total": 1738460.0,
+      "comissao_total": 121693.0,
+      "cashback_total": 86924.0,
+      "margem_total": 34769.0,
+      "margem_por_comprador": 7.64,
+      "ticket_medio": 382.16,
+      "cashback_pct_vendas": 5.0,
+      "roi_cashback": 0.4
+    },
+    {
+      "variante": "Grupo 2",
+      "compradores_total": 4522.0,
+      "dias": 45.0,
+      "vendas_total": 1685235.0,
+      "comissao_total": 117967.0,
+      "cashback_total": 117967.0,
+      "margem_total": 0.0,
+      "margem_por_comprador": 0.0,
+      "ticket_medio": 372.67,
+      "cashback_pct_vendas": 7.0,
+      "roi_cashback": 0.0
+    }
+  ],
+  "comparison": [
+    {
+      "variante": "Grupo 2",
+      "vs_baseline": "Grupo 1",
+      "dif_margem_por_comprador_media": -7.6427,
+      "ic95_low": -7.8878,
+      "ic95_high": -7.3936,
+      "prob_variante_supera_baseline": 0.0,
+      "n_dias_variante": 45,
+      "n_dias_baseline": 45,
+      "pareamento_usado": true,
+      "amostra_pequena_lt30d": false
+    }
+  ],
+  "decision": {
+    "acao": "escalar",
+    "variante_recomendada": "Grupo 1",
+    "motivo": "Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 7.64) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.",
+    "alertas": [
+      "Grupo 2 tem margem total <= R$ 0 (R$ 0.00). Essa variante queima receita e não deve ser escalada, independentemente de volume ou resultado estatístico."
+    ],
+    "ressalvas": [],
+    "evidencia_estatistica": {
+      "baseline": "Grupo 1",
+      "alternativas_comparadas": 1
+    },
+    "confiavel_estatisticamente": true
+  },
+  "artifacts": {
+    "markdown_path": "outputs\\reports\\cashback_parceiro_c.md",
+    "chart_path": "outputs\\reports\\cashback_parceiro_c_chart.png"
+  }
+}
