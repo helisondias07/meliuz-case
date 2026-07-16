@@ -211,6 +211,43 @@ npm run dev
 O dashboard sincroniza os resultados antes do `dev` e do `build`; veja
 `dashboard/README.md` para detalhes.
 
+### Dashboard ao vivo
+
+**A forma mais rapida de ver os resultados e acessar o dashboard publicado:**
+
+https://meliuz-case.vercel.app/
+
+Esse link permite revisar os testes sem clonar o repositorio e sem rodar nada
+localmente. A versao local em `dashboard/README.md` continua documentada para
+quem quiser executar, editar ou validar o app na propria maquina.
+
+Como usar:
+
+- Na tela de lista, cada card representa um teste A/B analisado. A pill colorida
+  no canto mostra a decisao final: verde para `Escalar [variante]` ou o estado
+  visual equivalente quando a recomendacao for manter o teste. O indicador logo
+  abaixo mostra se existe alerta critico de margem.
+- Clique em um card para abrir o detalhe do teste.
+- No detalhe, o resumo executivo mostra a decisao e o motivo em texto. Ao lado,
+  aparecem a confianca estatistica, a baseline usada e quantas alternativas
+  foram comparadas.
+- Alertas em vermelho e ressalvas em ambar aparecem quando existirem. Alertas
+  sao problemas criticos que descartam uma variante, como margem negativa.
+  Ressalvas sao avisos que nao descartam a variante, mas pedem cautela, como
+  amostra pequena.
+- O grafico de margem por comprador compara as variantes com barras coloridas
+  por status: verde para a recomendada, ambar para candidata nao confirmada e
+  vermelho para alerta.
+- A tabela de resumo por variante lista todas as metricas de negocio calculadas.
+- A tabela de comparacao estatistica mostra se o bootstrap foi pareado ou
+  independente, o intervalo de confianca de 95% e se a amostra foi considerada
+  suficiente, com pelo menos 30 dias.
+
+O dashboard e 100% somente leitura. Ele nao recalcula metricas nem altera dados;
+apenas exibe os resultados ja processados pelo pipeline Python em
+`outputs/results/*.json`. E uma camada adicional de visualizacao da Fase 2, nao
+o entregavel core do case.
+
 ## Testes
 
 ```bash
