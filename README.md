@@ -106,58 +106,77 @@ Responsabilidades:
 
 ## Lógica de decisão
 
-A pergunta central é: qual variante devemos escalar para 100% do tráfego?
+A pergunta que esse case faz é simples de enunciar e chata de responder direito:
+qual variante de cashback devemos escalar pra 100% do tráfego?
 
-A regra usada é:
+O jeito mais rápido de responder seria "a que vendeu mais". Mas isso é uma
+armadilha clássica: uma variante pode vender mais só porque está queimando
+cashback demais, o que destrói a margem do Méliuz mesmo trazendo volume. Então
+a primeira regra, antes de qualquer estatística, é um guardrail de negócio:
 
-1. Descartar variantes com `margem_total <= 0`.
-   Uma variante que não gera margem positiva não deve ser escalada, mesmo que
-   traga volume.
-2. Entre as variantes viáveis, olhar a maior `margem_por_comprador`.
-   Essa é a métrica principal porque conecta eficiência econômica com usuário
-   comprador. Ela é calculada como:
+1. **Descarta qualquer variante com `margem_total <= 0`.** Ponto final, não
+   importa o volume. O dataset do Parceiro C tem exatamente esse caso: o Grupo 2
+   zera a margem porque o cashback comeu toda a comissão. Esse alerta aparece
+   antes mesmo de rodar qualquer teste estatístico.
+2. **Entre as que sobraram, a métrica que decide é `margem_por_comprador`**,
+   não margem total nem GMV. Ela é calculada como `margem_total /
+   compradores_total`: uma razão do período inteiro, não a média das razões
+   diárias. Isso importa porque um dia com poucos compradores e margem estranha
+   não deveria pesar igual a um dia normal na média.
+3. A baseline, contra quem comparar as outras, é a variante com menor
+   `cashback_pct_vendas`, mas só entre as variantes viáveis. Isso pareceu óbvio
+   até eu perceber um edge case: e se a variante de menor cashback% for
+   justamente uma com margem negativa? Nesse caso a baseline vira a segunda
+   menor, não a inviável.
+4. Daí entra o bootstrap, explicado na seção seguinte, para verificar se a
+   vantagem da líder é real ou se é só ruído.
+5. Só escala se **duas coisas** forem verdade ao mesmo tempo: o IC95 da
+   diferença de margem por comprador não passa por zero, e o teste rodou pelo
+   menos 30 dias por grupo. Se qualquer uma falhar, a resposta é "não escalar
+   ainda; manter teste", mesmo que a variante pareça melhor na média observada.
+   Forçar uma decisão em cima de dado insuficiente é pior do que admitir que
+   ainda não dá pra saber.
 
-   ```text
-   margem_total / compradores_total
-   ```
+Uma coisa que me deixou mais confiante nessa lógica: rodei os 3 datasets
+primeiro com uma versão bem mais simples, baseada em comparação direta de
+médias, e depois com bootstrap pareado + guardrails. A resposta final não mudou:
+Grupo 1 nos três casos. Isso não prova que a conclusão está certa, mas mostra
+que ela não é um artefato de ter escolhido um método estatístico frágil.
 
-   ou seja, razão agregada do período inteiro, não média das razões diárias.
-3. Escolher a baseline entre as variantes viáveis, usando a menor
-   `cashback_pct_vendas`.
-4. Comparar variantes contra a baseline usando bootstrap por data.
-5. Escalar apenas se:
-   - o IC95 da diferença de margem por comprador exclui zero;
-   - a amostra tem pelo menos 30 dias por grupo.
-6. Se a evidência for fraca, recomendar:
+## Por que bootstrap pareado, e não um teste-t comum
 
-   ```text
-   Não escalar ainda; manter teste
-   ```
+Minha primeira versão usava Welch's t-test, que é o approach mais direto que
+qualquer curso de estatística ensina para comparar duas médias. Funcionava, mas
+tinha um problema que só percebi depois de olhar os dados com mais calma:
+**todas as variantes de um mesmo dataset rodam exatamente nas mesmas datas.**
+Não é um teste sequencial, primeiro Grupo 1 em um mês e depois Grupo 2 no mês
+seguinte. É concorrente: todo mundo ao mesmo tempo.
 
-O `prob_variante_supera_baseline` aparece no relatório como leitura intuitiva
-do bootstrap, mas não é o critério principal de decisão. O critério principal é
-o IC95 excluir zero.
+Isso muda a estatística certa a usar. Se um fim de semana ou uma promoção do
+parceiro faz todo mundo vender mais naquele dia, esse efeito bate em todas as
+variantes ao mesmo tempo. Comparar os grupos como se fossem amostras
+independentes, que é o que o t-test simples faz, ignora essa correlação e infla
+a incerteza sem necessidade.
 
-## Bootstrap pareado
+A correção é o bootstrap **pareado por data**:
 
-Nos datasets fornecidos, todas as variantes rodam nas mesmas datas. Por isso, o
-bootstrap é pareado por data:
+1. Sorteia um conjunto de datas com reposição, como no bootstrap comum.
+2. Aplica **o mesmo sorteio de datas** para a baseline e para a variante, já que
+   ambas têm exatamente as mesmas datas disponíveis.
+3. Recalcula, para cada reamostragem, a soma da margem dos dias sorteados
+   dividida pela soma de compradores dos mesmos dias sorteados, para cada grupo.
+4. Repete isso milhares de vezes e olha a distribuição das diferenças.
 
-1. Sorteia datas com reposição.
-2. Aplica o mesmo conjunto de datas à baseline e à variante.
-3. Recalcula, em cada reamostragem:
+Pareando dessa forma, o efeito "todo mundo vendeu mais nesse dia" cancela entre
+os dois grupos, e sobra só a diferença que realmente vem da variante em si.
+Isso deixa a estimativa mais precisa, com IC95 mais estreito, do que o bootstrap
+independente teria dado no mesmo cenário. Testei isso na prática; não é só
+teoria.
 
-   ```text
-   soma(margem dos dias sorteados) / soma(compradores dos dias sorteados)
-   ```
-
-Esse pareamento controla efeitos comuns de calendário, como fim de semana,
-promoções e sazonalidade do parceiro.
-
-Se um teste futuro não tiver as mesmas datas em todos os grupos, o código cai
-automaticamente para bootstrap independente e marca `pareamento_usado = false`
-no relatório. Isso mantém a automação funcionando, mas a estimativa tende a ser
-mais conservadora.
+Se um teste futuro não tiver as mesmas datas em todos os grupos, por exemplo se
+alguém rodar as variantes em janelas diferentes, o código cai automaticamente
+para bootstrap independente e marca isso no relatório (`pareamento_usado:
+false`), para deixar claro que a estimativa naquele caso é mais conservadora.
 
 ## Google Sheets
 
