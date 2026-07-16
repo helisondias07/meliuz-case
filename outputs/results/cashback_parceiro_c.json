@@ -66,9 +66,9 @@
   "decision": {
     "acao": "escalar",
     "variante_recomendada": "Grupo 1",
-    "motivo": "Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 7.64) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.",
+    "motivo": "Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 7,64) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.",
     "alertas": [
-      "Grupo 2 tem margem total <= R$ 0 (R$ 0.00). Essa variante queima receita e não deve ser escalada, independentemente de volume ou resultado estatístico."
+      "Grupo 2 tem margem total <= R$ 0,00 (R$ 0,00). Essa variante queima receita e não deve ser escalada, independentemente de volume ou resultado estatístico."
     ],
     "ressalvas": [],
     "evidencia_estatistica": {

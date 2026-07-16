@@ -1,0 +1,630 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --surface: #fffdfa;
+  --surface-strong: #f0eee8;
+  --ink: #1f2423;
+  --muted: #66706c;
+  --line: #d9ddd6;
+  --line-strong: #bac5be;
+  --confirmed: #2f6f6d;
+  --confirmed-soft: #e5f0ec;
+  --candidate: #b7791f;
+  --candidate-soft: #f5ead7;
+  --danger: #c92a2a;
+  --danger-soft: #f8dfdc;
+  --radius: 18px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  font-family: "Source Sans 3", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    linear-gradient(90deg, rgba(31, 36, 35, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(31, 36, 35, 0.03) 1px, transparent 1px),
+    var(--bg);
+  background-size: 42px 42px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.92em;
+}
+
+.app-shell {
+  min-height: 100dvh;
+}
+
+.screen {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin-bottom: 34px;
+}
+
+.meliuz-logo {
+  display: block;
+  width: clamp(112px, 12vw, 140px);
+  height: auto;
+}
+
+.fade-in {
+  animation: fadeUp 640ms var(--ease) both;
+}
+
+.page-header,
+.detail-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+
+.kicker {
+  margin: 0 0 10px;
+  color: var(--confirmed);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0;
+}
+
+h1 {
+  max-width: 720px;
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 3.6vw, 3.3rem);
+  line-height: 1.03;
+}
+
+.lead {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.5;
+}
+
+.count-block {
+  min-width: 154px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 250, 0.78);
+}
+
+.count-block span {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.count-block small,
+.metric small,
+.fact small {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.test-list {
+  display: grid;
+  gap: 14px;
+}
+
+.test-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid rgba(47, 111, 109, 0.16);
+  border-radius: calc(var(--radius) + 8px);
+  background: rgba(255, 253, 250, 0.72);
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: cardIn 560ms var(--ease) var(--delay) both;
+  transition:
+    border-color 280ms var(--ease),
+    transform 280ms var(--ease),
+    background 280ms var(--ease);
+}
+
+.test-card:hover {
+  border-color: rgba(47, 111, 109, 0.42);
+  background: rgba(255, 253, 250, 0.96);
+  transform: translateY(-1px);
+}
+
+.test-card:active {
+  transform: translateY(1px);
+}
+
+.card-main {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(320px, 0.86fr);
+  gap: 24px;
+  padding: 22px;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+}
+
+.card-title-block h2 {
+  margin-bottom: 8px;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+}
+
+.card-title-block p,
+.section-heading p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.partner {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+}
+
+.card-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-content: center;
+}
+
+.metric,
+.fact {
+  display: grid;
+  gap: 6px;
+}
+
+.metric strong,
+.fact strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.18rem;
+}
+
+.card-decision {
+  display: grid;
+  min-width: 250px;
+  align-content: center;
+  gap: 12px;
+  padding: 22px;
+}
+
+.decision-pill,
+.alert-chip,
+.status-text,
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.decision-pill {
+  width: max-content;
+  max-width: 100%;
+  padding: 10px 13px;
+  border-radius: 999px;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+}
+
+.decision-pill.large {
+  padding: 13px 16px;
+  font-size: 1.08rem;
+}
+
+.confirmed {
+  color: var(--confirmed);
+}
+
+.candidate {
+  color: var(--candidate);
+}
+
+.danger {
+  color: var(--danger);
+}
+
+.decision-pill.confirmed {
+  background: var(--confirmed-soft);
+}
+
+.decision-pill.candidate {
+  background: var(--candidate-soft);
+}
+
+.alert-chip {
+  width: max-content;
+  max-width: 100%;
+  font-weight: 700;
+}
+
+.alert-chip.danger {
+  color: var(--danger);
+}
+
+.alert-chip.quiet {
+  color: var(--muted);
+}
+
+.arrow {
+  color: var(--muted);
+}
+
+.back-button {
+  margin-bottom: 22px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    transform 220ms var(--ease),
+    border-color 220ms var(--ease);
+}
+
+.back-button:hover {
+  border-color: var(--line-strong);
+  transform: translateX(-2px);
+}
+
+.executive-panel,
+.section-block {
+  padding: 6px;
+  border: 1px solid rgba(31, 36, 35, 0.1);
+  border-radius: calc(var(--radius) + 8px);
+  background: rgba(255, 253, 250, 0.66);
+}
+
+.executive-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.6fr) minmax(220px, 0.6fr);
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.memo,
+.notice,
+.section-block > .section-heading,
+.chart,
+.table-wrap,
+.compact .numeric-stack {
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+}
+
+.memo {
+  padding: 28px;
+}
+
+.memo-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.memo h2 {
+  max-width: 820px;
+  margin-bottom: 24px;
+  font-size: clamp(1.35rem, 3vw, 2.1rem);
+  line-height: 1.16;
+}
+
+.memo-facts,
+.numeric-stack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.notice {
+  padding: 22px;
+}
+
+.notice-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.notice li,
+.notice p {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.notice.muted p {
+  color: var(--muted);
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.section-block {
+  margin-bottom: 18px;
+}
+
+.section-heading {
+  padding: 22px 22px 18px;
+}
+
+.section-heading h2 {
+  margin-bottom: 5px;
+  font-size: 1.55rem;
+}
+
+.chart {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.chart-row {
+  display: grid;
+  gap: 8px;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.chart-label span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.chart-row small {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.bar-track {
+  height: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-strong);
+}
+
+.bar {
+  height: 100%;
+  min-width: 8px;
+  border-radius: inherit;
+}
+
+.bar.confirmed {
+  background: var(--confirmed);
+}
+
+.bar.candidate {
+  background: var(--candidate);
+}
+
+.bar.danger {
+  background: var(--danger);
+}
+
+.compact .numeric-stack {
+  grid-template-columns: 1fr;
+  padding: 22px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  font-size: 0.98rem;
+}
+
+tbody tr.confirmed {
+  background: linear-gradient(90deg, rgba(47, 111, 109, 0.09), transparent 52%);
+}
+
+tbody tr.danger {
+  background: linear-gradient(90deg, rgba(201, 42, 42, 0.09), transparent 52%);
+}
+
+.status-text {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-text.neutral {
+  color: var(--muted);
+}
+
+.empty-state {
+  max-width: 620px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.empty-state h2 {
+  margin: 10px 0 8px;
+}
+
+.empty-state p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 920px) {
+  .page-header,
+  .detail-header,
+  .test-card,
+  .card-main,
+  .executive-panel,
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .card-decision {
+    padding: 12px 18px 18px;
+  }
+
+  .memo-facts,
+  .numeric-stack,
+  .card-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-pill {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .screen {
+    width: min(100% - 24px, 1180px);
+    padding: 28px 0 44px;
+  }
+
+  .brand-header {
+    margin-bottom: 24px;
+  }
+
+  .meliuz-logo {
+    width: 104px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 10vw, 3rem);
+  }
+
+  .card-main,
+  .memo,
+  .notice,
+  .section-heading,
+  .chart,
+  .compact .numeric-stack {
+    padding: 18px;
+  }
+}

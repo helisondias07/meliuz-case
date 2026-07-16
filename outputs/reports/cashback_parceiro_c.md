@@ -4,7 +4,7 @@
 
 **Decisão:** Escalar Grupo 1 para 100% do tráfego
 
-Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 7.64) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.
+Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprador entre as opções viáveis (R$ 7,64) e a diferença é estatisticamente robusta pelo IC95 do bootstrap.
 
 **Descrição:** 2 faixas de cashback, teste concorrente por data
 
@@ -15,7 +15,7 @@ Escalar Grupo 1 para 100% do tráfego. A variante tem a maior margem por comprad
 
 ### Alertas críticos
 
-- **Atenção:** Grupo 2 tem margem total <= R$ 0 (R$ 0.00). Essa variante queima receita e não deve ser escalada, independentemente de volume ou resultado estatístico.
+- **Atenção:** Grupo 2 tem margem total <= R$ 0,00 (R$ 0,00). Essa variante queima receita e não deve ser escalada, independentemente de volume ou resultado estatístico.
 
 ## Resumo por variante
 

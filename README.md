@@ -194,6 +194,23 @@ $env:SHEET_TAB_NAME = "acompanhamento"
 Se a escrita no Sheets falhar por credencial, rede ou permissão, o pipeline não
 quebra. Ele mostra um aviso e mantém o CSV local como fallback.
 
+## Dashboard web
+
+Ha um dashboard React em `dashboard/` para visualizar os JSONs gerados em
+`outputs/results/`. Ele e um adicional de portfolio, nao o entregavel core do
+case nem uma nova etapa de calculo.
+
+Para rodar:
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+O dashboard sincroniza os resultados antes do `dev` e do `build`; veja
+`dashboard/README.md` para detalhes.
+
 ## Testes
 
 ```bash

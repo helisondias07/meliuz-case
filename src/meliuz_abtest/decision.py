@@ -16,6 +16,14 @@ ACTION_SCALE = "escalar"
 ACTION_KEEP_TESTING = "manter_teste"
 
 
+def _format_currency_brl(value: float) -> str:
+    """Formata moeda no padrao brasileiro sem depender do locale do sistema."""
+    absolute = abs(float(value))
+    formatted = f"{absolute:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
+    prefix = "-R$" if value < 0 else "R$"
+    return f"{prefix} {formatted}"
+
+
 def make_decision(summary: pd.DataFrame, comparison: pd.DataFrame, baseline: str) -> dict:
     """Retorna a recomendacao final do teste.
 
@@ -44,6 +52,7 @@ def make_decision(summary: pd.DataFrame, comparison: pd.DataFrame, baseline: str
 
     leader = str(viable["margem_por_comprador"].idxmax())
     leader_margin = float(viable.loc[leader, "margem_por_comprador"])
+    leader_margin_formatted = _format_currency_brl(leader_margin)
 
     robust, caveats, evidence = _statistical_evidence_for_leader(leader, baseline, comparison)
     if robust:
@@ -52,7 +61,7 @@ def make_decision(summary: pd.DataFrame, comparison: pd.DataFrame, baseline: str
             "variante_recomendada": leader,
             "motivo": (
                 f"Escalar {leader} para 100% do tráfego. A variante tem a maior margem "
-                f"por comprador entre as opções viáveis (R$ {leader_margin:.2f}) e a "
+                f"por comprador entre as opções viáveis ({leader_margin_formatted}) e a "
                 "diferença é estatisticamente robusta pelo IC95 do bootstrap."
             ),
             "alertas": alerts,
@@ -66,7 +75,7 @@ def make_decision(summary: pd.DataFrame, comparison: pd.DataFrame, baseline: str
         "variante_recomendada": None,
         "motivo": (
             f"Não escalar ainda; manter teste. {leader} tem a maior margem por comprador "
-            f"observada (R$ {leader_margin:.2f}), mas a evidência estatística ainda não "
+            f"observada ({leader_margin_formatted}), mas a evidência estatística ainda não "
             "é suficiente para mover 100% do tráfego com segurança."
         ),
         "alertas": alerts,
@@ -81,7 +90,7 @@ def _margin_alerts(summary: pd.DataFrame) -> list[str]:
     non_positive = summary[summary["margem_total"] <= 0]
     for variant, row in non_positive.iterrows():
         alerts.append(
-            f"{variant} tem margem total <= R$ 0 (R$ {row['margem_total']:.2f}). "
+            f"{variant} tem margem total <= R$ 0,00 ({_format_currency_brl(row['margem_total'])}). "
             "Essa variante queima receita e não deve ser escalada, independentemente "
             "de volume ou resultado estatístico."
         )
