@@ -6,8 +6,11 @@
 
 🔗 **Dashboard:** [meliuz-case.vercel.app](https://meliuz-case.vercel.app)
 
-<!-- TODO(Helison): gravar um GIF/print da aplicação e salvar em docs/demo.gif, depois descomentar a linha abaixo -->
-<!-- ![Demonstração](./docs/demo.gif) -->
+<div align="center">
+  <img src="./docs/demo.gif" alt="Demonstração" width="800" />
+</div>
+
+<!-- Print estático: ./docs/screenshot.png -->
 
 Este projeto foi feito para o case técnico de Estágio em Operações Integradas do
 Méliuz.
@@ -179,7 +182,11 @@ fallback independente, regra de decisão, geração dos relatórios e tracking.
 
 ## Aprendizados
 
-<!-- TODO(Helison): 3 ou 4 bullets (ex.: escolher a métrica principal, por que bootstrap pareado, como automatizar a decisão) -->
+- Troquei a média de margens diárias pela **razão agregada** (margem total / compradores totais), para que dias pequenos ou atípicos não distorçam a métrica principal.
+- Percebi que as variantes rodam nas mesmas datas e usei **bootstrap pareado por data**, com fallback automático para bootstrap independente (`pareamento_usado: false`) quando isso não vale.
+- Transformei a decisão em regras explícitas e auditáveis em `decision.py`: margem positiva, melhor margem por comprador, IC95 sem cruzar zero e mínimo de 30 dias. Quando falta evidência, a recomendação é manter o teste.
+- Organizei o código em módulos com responsabilidade única (carga de dados, métricas, estatística, decisão, relatório, acompanhamento), cada um com teste em pytest.
+- Automatizei a saída para relatório em Markdown com gráfico, CSV de acompanhamento e Google Sheets opcional.
 
 ## Licença
 
