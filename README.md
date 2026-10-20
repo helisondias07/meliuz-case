@@ -1,5 +1,14 @@
 # Análise de Testes A/B de Cashback - Méliuz
 
+[![CI](https://github.com/helisondias07/meliuz-case/actions/workflows/ci.yml/badge.svg)](https://github.com/helisondias07/meliuz-case/actions/workflows/ci.yml) ![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
+**Stack:** Python · pandas · bootstrap pareado · pytest · dashboard estático (Vercel)
+
+🔗 **Dashboard:** [meliuz-case.vercel.app](https://meliuz-case.vercel.app)
+
+<!-- TODO(Helison): gravar um GIF/print da aplicação e salvar em docs/demo.gif, depois descomentar a linha abaixo -->
+<!-- ![Demonstração](./docs/demo.gif) -->
+
 Este projeto foi feito para o case técnico de Estágio em Operações Integradas do
 Méliuz.
 
@@ -167,3 +176,11 @@ fallback independente, regra de decisão, geração dos relatórios e tracking.
 - A baseline é inferida pela menor taxa de cashback entre variantes viáveis. Se
   existir uma marcação explícita de grupo controle no futuro, isso pode virar um
   parâmetro do CLI.
+
+## Aprendizados
+
+<!-- TODO(Helison): 3 ou 4 bullets (ex.: escolher a métrica principal, por que bootstrap pareado, como automatizar a decisão) -->
+
+## Licença
+
+MIT © Helison Dias
